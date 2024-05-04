@@ -79,39 +79,43 @@ public class MainSceneController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         playlist = new ArrayList<File>();
-
+    
         directory = new File("playlist");
-
+    
         files = directory.listFiles();
-
-        if(files != null){
+    
+        if (files != null) {
             for (File file : files) {
                 playlist.add(file);
                 System.out.println(file);
             }
         }
-
-        media = new Media(playlist.get(songNumber).toURI().toString());
-        mediaPlayer = new MediaPlayer(media);
-
-        songLabel.setText(playlist.get(songNumber).getName());
-
-        for(int i = 0; i < speeds.length; i++) {
-            speedBox.getItems().add(Integer.toString(speeds[i]) + "%");
+    
+        if (playlist.isEmpty()) {
+            songLabel.setText("Add Songs!");
+            TurnButtons(true);
+        } else {
+            media = new Media(playlist.get(songNumber).toURI().toString());
+            mediaPlayer = new MediaPlayer(media);
+    
+            songLabel.setText(playlist.get(songNumber).getName());
+    
+            for (int i = 0; i < speeds.length; i++) {
+                speedBox.getItems().add(Integer.toString(speeds[i]) + "%");
+            }
+            speedBox.setOnAction(this::changeSpeed);
+    
+            volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
+                @Override
+                public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
+                    mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
+                }
+            });
+    
+            changeValueSong();
+    
+            setMaxDurationSong();
         }
-        speedBox.setOnAction(this::changeSpeed);
-
-        volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
-				
-				mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);			
-			}
-        });
-
-        changeValueSong();
-
-        setMaxDurationSong();
     }
 
     @FXML
@@ -129,7 +133,7 @@ public class MainSceneController implements Initializable{
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose song to add!");
         File selectedFile = fileChooser.showOpenDialog(null);
-
+    
         if (selectedFile != null) {
             File destination = new File("playlist/" + selectedFile.getName());
             try {
@@ -137,15 +141,22 @@ public class MainSceneController implements Initializable{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+    
             playlist.add(destination);
-
+    
+            if (!playlist.isEmpty()) {
+                TurnButtons(false);
+                songLabel.setText(destination.getName());
+            }
+    
             System.out.println("Added song: " + destination);
-
-            mediaPlayer.stop();
+    
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();
+            }
+            
             media = new Media(destination.toURI().toString());
             mediaPlayer = new MediaPlayer(media);
-            songLabel.setText(destination.getName());
             playMedia();
             progressBar.setValue(0);
             changeValueSong();
@@ -257,6 +268,16 @@ public class MainSceneController implements Initializable{
 
             durationField.setText(String.format("%02d:%02d / %02d:%02d", currentMinutes, currentSeconds, totalMinutes, totalSeconds));
         });
+    }
+
+    void TurnButtons(boolean x){
+        playButton.setDisable(x);
+        nextButton.setDisable(x);
+        previousButton.setDisable(x);
+        forwardButton.setDisable(x);
+        rewindButton.setDisable(x);
+        speedBox.setDisable(x);
+        resetButton.setDisable(x);
     }
 
 }
