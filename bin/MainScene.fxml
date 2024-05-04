@@ -19,7 +19,7 @@
       </Label>
       <Slider fx:id="volumeSlider" layoutX="7.0" layoutY="3.0" max="100.0" orientation="VERTICAL" prefHeight="129.0" prefWidth="14.0" value="50.0" />
       <Slider fx:id="progressBar" layoutX="5.0" layoutY="139.0" onMouseDragged="#progressbarDragged" onMousePressed="#progressbarPressed" onMouseReleased="#progressbarReleased" prefHeight="14.0" prefWidth="590.0" />
-      <Button fx:id="chooseSongButton" layoutX="507.0" layoutY="3.0" mnemonicParsing="false" onAction="#chooseSong" prefHeight="25.0" prefWidth="90.0" text="Choose Song" />
+      <Button fx:id="chooseSongButton" layoutX="507.0" layoutY="3.0" mnemonicParsing="false" onAction="#chooseSong" prefHeight="25.0" prefWidth="90.0" text="Add Song" />
       <HBox alignment="CENTER" layoutX="2.0" layoutY="150.0" prefHeight="49.0" prefWidth="578.0" style="-fx-spacing: 12px;">
          <children>
             <Button fx:id="rewindButton" mnemonicParsing="false" onAction="#rewindMedia" prefHeight="40.0" prefWidth="40.0" text="-5s" />

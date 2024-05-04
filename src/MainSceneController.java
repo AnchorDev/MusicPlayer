@@ -14,7 +14,9 @@ import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -125,16 +127,20 @@ public class MainSceneController implements Initializable{
     @FXML
     void chooseSong(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Wybierz piosenkę");
+        fileChooser.setTitle("Choose song to add");
         File selectedFile = fileChooser.showOpenDialog(null);
     
         if (selectedFile != null) {
             File destination = new File("playlist/" + selectedFile.getName());
-            selectedFile.renameTo(destination);
+            try {
+                Files.copy(selectedFile.toPath(), destination.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     
             playlist.add(destination);
     
-            System.out.println("Dodano piosenkę: " + destination);
+            System.out.println("Copied song: " + destination);
     
             if (playlist.size() == 1) {
                 mediaPlayer.stop();
