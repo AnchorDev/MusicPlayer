@@ -127,9 +127,9 @@ public class MainSceneController implements Initializable{
     @FXML
     void chooseSong(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose song to add");
+        fileChooser.setTitle("Choose song to add!");
         File selectedFile = fileChooser.showOpenDialog(null);
-    
+
         if (selectedFile != null) {
             File destination = new File("playlist/" + selectedFile.getName());
             try {
@@ -137,21 +137,19 @@ public class MainSceneController implements Initializable{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-    
+
             playlist.add(destination);
-    
-            System.out.println("Copied song: " + destination);
-    
-            if (playlist.size() == 1) {
-                mediaPlayer.stop();
-                media = new Media(destination.toURI().toString());
-                mediaPlayer = new MediaPlayer(media);
-                songLabel.setText(destination.getName());
-                playMedia();
-                progressBar.setValue(0);
-                changeValueSong();
-                setMaxDurationSong();
-            }
+
+            System.out.println("Added song: " + destination);
+
+            mediaPlayer.stop();
+            media = new Media(destination.toURI().toString());
+            mediaPlayer = new MediaPlayer(media);
+            songLabel.setText(destination.getName());
+            playMedia();
+            progressBar.setValue(0);
+            changeValueSong();
+            setMaxDurationSong();
         }
     }
 
