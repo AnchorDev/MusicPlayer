@@ -99,7 +99,6 @@ public class MainSceneController implements Initializable{
         if (files != null) {
             for (File file : files) {
                 playlist.add(file);
-                System.out.println(file);
             }
         }
     
@@ -121,10 +120,17 @@ public class MainSceneController implements Initializable{
             }
             speedBox.setOnAction(this::changeSpeed);
     
-            volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
-                @Override
-                public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
-                    mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
+            volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+                mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
+            });
+    
+            mediaPlayer.setOnEndOfMedia(() -> {
+                if (songNumber < playlist.size() - 1) {
+                    nextMedia(null);
+                } else {
+                    songNumber = 0;
+                    mediaPlayer.stop();
+                    playMedia();
                 }
             });
     
@@ -346,5 +352,7 @@ public class MainSceneController implements Initializable{
         songLabel.setTextFill(Color.web(textColor));
         backgroundPane.setStyle("-fx-background-color: " + backgroundColor + ";");
     }
+
+
 
 }
