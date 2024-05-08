@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -84,6 +86,8 @@ public class MainSceneController implements Initializable{
     private final String[] textColors = {"#F0D90B", "#240F79", "#D65B16"};
     private final String[] backgroundColors = {"#999B23", "#3B239B", "#9B3923"};
 
+    private Random random = new Random();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         playlist = new ArrayList<File>();
@@ -111,7 +115,7 @@ public class MainSceneController implements Initializable{
                 songName = songName.substring(0, songName.length() - 4);
             }
             songLabel.setText(songName);
-    
+            setRandomColors();
             for (int i = 0; i < speeds.length; i++) {
                 speedBox.getItems().add(Integer.toString(speeds[i]) + "%");
             }
@@ -187,7 +191,7 @@ public class MainSceneController implements Initializable{
             }
 
             mediaPlayer.setRate(1.0);
-
+            setRandomColors();
             playMedia();
             progressBar.setValue(0);
             changeValueSong();
@@ -214,7 +218,7 @@ public class MainSceneController implements Initializable{
             songName = songName.substring(0, songName.length() - 4);
         }
         songLabel.setText(songName);
-
+        setRandomColors();
         playMedia();
         progressBar.setValue(0);
         changeValueSong();
@@ -265,7 +269,7 @@ public class MainSceneController implements Initializable{
             songName = songName.substring(0, songName.length() - 4);
         }
         songLabel.setText(songName);
-    
+        setRandomColors();
         playMedia();
         progressBar.setValue(0);
         changeValueSong();
@@ -332,6 +336,15 @@ public class MainSceneController implements Initializable{
         rewindButton.setDisable(x);
         speedBox.setDisable(x);
         resetButton.setDisable(x);
+    }
+
+    private void setRandomColors() {
+        int colorIndex = random.nextInt(textColors.length);
+        String textColor = textColors[colorIndex];
+        String backgroundColor = backgroundColors[colorIndex];
+
+        songLabel.setTextFill(Color.web(textColor));
+        backgroundPane.setStyle("-fx-background-color: " + backgroundColor + ";");
     }
 
 }

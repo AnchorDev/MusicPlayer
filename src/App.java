@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -18,6 +19,7 @@ public class App extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("MainScene.fxml"));
         Scene scene = new Scene(root);
 
+        primaryStage.getIcons().add(new Image("file:imgs/icon.png"));
         primaryStage.setTitle("Music Player");
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
