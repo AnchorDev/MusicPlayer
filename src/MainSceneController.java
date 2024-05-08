@@ -5,6 +5,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
@@ -76,6 +79,11 @@ public class MainSceneController implements Initializable{
     private int songNumber;
     private int[] speeds = {25,50,75,100,125,150,175,200};
 
+    private double currentVolume = 100;
+
+    private final String[] textColors = {"#F0D90B", "#240F79", "#D65B16"};
+    private final String[] backgroundColors = {"#999B23", "#3B239B", "#9B3923"};
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         playlist = new ArrayList<File>();
@@ -98,7 +106,11 @@ public class MainSceneController implements Initializable{
             media = new Media(playlist.get(songNumber).toURI().toString());
             mediaPlayer = new MediaPlayer(media);
     
-            songLabel.setText(playlist.get(songNumber).getName());
+            String songName = playlist.get(songNumber).getName();
+            if (songName.endsWith(".mp3") || songName.endsWith(".mp4")) {
+                songName = songName.substring(0, songName.length() - 4);
+            }
+            songLabel.setText(songName);
     
             for (int i = 0; i < speeds.length; i++) {
                 speedBox.getItems().add(Integer.toString(speeds[i]) + "%");
@@ -133,7 +145,7 @@ public class MainSceneController implements Initializable{
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose song to add!");
         File selectedFile = fileChooser.showOpenDialog(null);
-    
+
         if (selectedFile != null) {
             File destination = new File("playlist/" + selectedFile.getName());
             try {
@@ -141,22 +153,41 @@ public class MainSceneController implements Initializable{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-    
+
             playlist.add(destination);
-    
+
             if (!playlist.isEmpty()) {
                 TurnButtons(false);
-                songLabel.setText(destination.getName());
+                String songName = destination.getName();
+                if (songName.endsWith(".mp3") || songName.endsWith(".mp4")) {
+                    songName = songName.substring(0, songName.length() - 4);
+                }
+                songLabel.setText(songName);
             }
-    
+
             System.out.println("Added song: " + destination);
-    
+
             if (mediaPlayer != null) {
                 mediaPlayer.stop();
             }
-            
+
             media = new Media(destination.toURI().toString());
             mediaPlayer = new MediaPlayer(media);
+
+            volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
+                @Override
+                public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
+                    mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
+                }
+            });
+
+            speedBox.getItems().clear();
+            for (int i = 0; i < speeds.length; i++) {
+                speedBox.getItems().add(Integer.toString(speeds[i]) + "%");
+            }
+
+            mediaPlayer.setRate(1.0);
+
             playMedia();
             progressBar.setValue(0);
             changeValueSong();
@@ -178,7 +209,12 @@ public class MainSceneController implements Initializable{
         media = new Media(playlist.get(songNumber).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
 
-        songLabel.setText(playlist.get(songNumber).getName());
+        String songName = playlist.get(songNumber).getName();
+        if (songName.endsWith(".mp3") || songName.endsWith(".mp4")) {
+            songName = songName.substring(0, songName.length() - 4);
+        }
+        songLabel.setText(songName);
+
         playMedia();
         progressBar.setValue(0);
         changeValueSong();
@@ -190,10 +226,23 @@ public class MainSceneController implements Initializable{
         changeSpeed(null);
         if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             mediaPlayer.pause();
-            playButton.setText("Play");
+            Image playImage = new Image("file:imgs/Play.png");
+            ImageView playImageView = new ImageView(playImage);
+            playImageView.setFitWidth(30);
+            playImageView.setFitHeight(30);
+            playButton.setGraphic(playImageView);
+
+
+            playButton.getTooltip().setText("Play");
         } else {
             mediaPlayer.play();
-            playButton.setText("Pause");
+            Image playImage = new Image("file:imgs/Pause.png");
+            ImageView playImageView = new ImageView(playImage);
+            playImageView.setFitWidth(30);
+            playImageView.setFitHeight(30);
+            playButton.setGraphic(playImageView);
+            
+            playButton.getTooltip().setText("Pause");
         }
     }
 
@@ -207,11 +256,16 @@ public class MainSceneController implements Initializable{
             songNumber = playlist.size()-1;
         }
         mediaPlayer.stop();
-
+    
         media = new Media(playlist.get(songNumber).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
-
-        songLabel.setText(playlist.get(songNumber).getName());
+    
+        String songName = playlist.get(songNumber).getName();
+        if (songName.endsWith(".mp3") || songName.endsWith(".mp4")) {
+            songName = songName.substring(0, songName.length() - 4);
+        }
+        songLabel.setText(songName);
+    
         playMedia();
         progressBar.setValue(0);
         changeValueSong();

@@ -5,6 +5,9 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
@@ -19,16 +22,56 @@
       </Label>
       <Slider fx:id="volumeSlider" layoutX="7.0" layoutY="3.0" max="100.0" orientation="VERTICAL" prefHeight="129.0" prefWidth="14.0" value="50.0" />
       <Slider fx:id="progressBar" layoutX="5.0" layoutY="139.0" onMouseDragged="#progressbarDragged" onMousePressed="#progressbarPressed" onMouseReleased="#progressbarReleased" prefHeight="14.0" prefWidth="590.0" />
-      <Button fx:id="chooseSongButton" layoutX="507.0" layoutY="3.0" mnemonicParsing="false" onAction="#chooseSong" prefHeight="25.0" prefWidth="90.0" text="Add Song" />
+      <Button fx:id="chooseSongButton" layoutX="507.0" layoutY="3.0" mnemonicParsing="false" onAction="#chooseSong" prefHeight="25.0" prefWidth="90.0" stylesheets="@button.css" text="Add Song" />
       <HBox alignment="CENTER" layoutX="2.0" layoutY="150.0" prefHeight="49.0" prefWidth="578.0" style="-fx-spacing: 12px;">
          <children>
-            <Button fx:id="rewindButton" mnemonicParsing="false" onAction="#rewindMedia" prefHeight="40.0" prefWidth="40.0" text="-5s" />
-            <ComboBox fx:id="speedBox" onAction="#changeSpeed" prefHeight="40.0" prefWidth="76.0" promptText="Speed" />
-            <Button fx:id="previousButton" mnemonicParsing="false" onAction="#previousMedia" prefHeight="40.0" prefWidth="90.0" text="Previous" />
-            <Button fx:id="playButton" mnemonicParsing="false" onAction="#playMedia" prefHeight="40.0" prefWidth="80.0" text="Play" />
-            <Button fx:id="nextButton" mnemonicParsing="false" onAction="#nextMedia" prefHeight="40.0" prefWidth="90.0" text="Next" />
-            <Button fx:id="forwardButton" mnemonicParsing="false" onAction="#forwardMedia" prefHeight="40.0" prefWidth="40.0" text="+5s" />
-            <Button fx:id="resetButton" mnemonicParsing="false" onAction="#resetMedia" prefHeight="40.0" prefWidth="50.0" text="Reset" />
+            <Button fx:id="rewindButton" mnemonicParsing="false" onAction="#rewindMedia" prefHeight="40.0" prefWidth="40.0" stylesheets="@button.css" text="-5s" />
+            <ComboBox fx:id="speedBox" onAction="#changeSpeed" prefHeight="40.0" prefWidth="76.0" promptText="Speed" stylesheets="@combobox.css" />
+            <Button fx:id="previousButton" mnemonicParsing="false" onAction="#previousMedia" prefHeight="40.0" prefWidth="90.0" stylesheets="@button.css">
+               <tooltip>
+                  <Tooltip text="Previous" />
+               </tooltip>
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../imgs/Previous.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="playButton" mnemonicParsing="false" onAction="#playMedia" prefHeight="40.0" prefWidth="80.0" stylesheets="@button.css">
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../imgs/Play.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Play" />
+               </tooltip></Button>
+            <Button fx:id="nextButton" mnemonicParsing="false" onAction="#nextMedia" prefHeight="40.0" prefWidth="90.0" stylesheets="@button.css">
+               <tooltip>
+                  <Tooltip text="Next" />
+               </tooltip>
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../imgs/Next.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="forwardButton" mnemonicParsing="false" onAction="#forwardMedia" prefHeight="40.0" prefWidth="40.0" stylesheets="@button.css" text="+5s" />
+            <Button fx:id="resetButton" mnemonicParsing="false" onAction="#resetMedia" prefHeight="40.0" prefWidth="50.0" stylesheets="@button.css">
+               <tooltip>
+                  <Tooltip text="Reset" />
+               </tooltip>
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../imgs/Reset.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
          </children>
          <opaqueInsets>
             <Insets />
